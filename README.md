@@ -38,7 +38,7 @@ Examples:
 
 Example:
 
-```text
+```
 Website asks:
 Who are you?
 
@@ -56,7 +56,7 @@ After identity is verified, the system decides what resources you may use.
 
 Example:
 
-```text
+```
 Employee login successful
 
 Can access:
@@ -76,7 +76,7 @@ Attacker tries common words from a list.
 
 Example:
 
-```text
+```
 password
 football
 india123
@@ -94,7 +94,7 @@ Attacker systematically tries every possible password.
 
 Example:
 
-```text
+```
 0000
 0001
 0002
@@ -105,7 +105,7 @@ Example:
 
 A 4-digit PIN:
 
-```text
+```
 10^4 = 10,000 combinations
 ```
 
@@ -119,7 +119,7 @@ Increasing character sets dramatically increases possibilities.
 
 ### Digits only
 
-```text
+```
 0-9
 ```
 
@@ -129,7 +129,7 @@ Increasing character sets dramatically increases possibilities.
 
 ### Letters
 
-```text
+```
 a-z
 A-Z
 ```
@@ -140,7 +140,7 @@ A-Z
 
 ### Letters + Numbers + Symbols
 
-```text
+```
 A-Z
 a-z
 0-9
@@ -161,7 +161,7 @@ Important points:
 
 At least:
 
-```text
+```
 8 characters
 ```
 
@@ -171,7 +171,7 @@ At least:
 
 Allow at least:
 
-```text
+```
 64 characters
 ```
 
@@ -181,7 +181,7 @@ Allow at least:
 
 Examples:
 
-```text
+```
 !
 @
 #
@@ -195,7 +195,7 @@ $
 
 Examples:
 
-```text
+```
 你好
 नमस्ते
 😊
@@ -235,7 +235,7 @@ Changing passwords every month often leads users to choose weaker passwords.
 
 Bad:
 
-```text
+```
 Password1
 Password2
 Password3
@@ -249,7 +249,7 @@ Limit login attempts.
 
 Example:
 
-```text
+```
 5 failed attempts
 
 Account locked temporarily
