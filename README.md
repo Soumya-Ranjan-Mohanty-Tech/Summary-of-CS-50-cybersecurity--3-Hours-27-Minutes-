@@ -610,7 +610,7 @@ Password → Hash
 
 Example:
 
-```text
+```
 apple → xyz
 banana → abc
 ```
@@ -625,7 +625,7 @@ Random value added before hashing.
 
 Example:
 
-```text
+```
 password + salt
 ↓
 hash
