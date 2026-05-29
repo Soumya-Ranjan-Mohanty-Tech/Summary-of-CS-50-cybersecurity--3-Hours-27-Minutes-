@@ -1,239 +1,651 @@
 # Summary-of-CS-50-cybersecurity--3-Hours-27-Minutes-
 
-# CS50 Intro to Cybersecurity (Part 1–3) — The Complete Condensed Study Guide
+# CS50 Intro to Cybersecurity 
 
-```text
-Identity
-   ↓
-Authentication
-   ↓
-Authorization
-   ↓
-Cryptography
-   ↓
-Secure Communication
-   ↓
-Secure Storage
-   ↓
-Secure Systems
-   ↓
-Future Threats (Quantum Computing)
+---
+
+# MODULE 1 — Foundations of Cybersecurity
+
+Cryptography is the science of protecting information by converting readable data (plaintext) into unreadable data (ciphertext) so that only authorized parties can access it.
+
+The three primary goals are:
+
+Confidentiality: Prevent unauthorized people from reading data.
+Integrity: Ensure data has not been modified.
+Authentication: Verify the identity of the sender.
+
+Cybersecurity is broadly about:
+
+* Securing accounts
+* Securing data
+* Securing systems
+* Preserving privacy
+* Preventing unauthorized access
+
+The entire field revolves around 3 big questions:
+
+```
+1. Who are you?
+2. Should you have access?
+3. How do we protect the data?
 ```
 
 ---
 
-# 1. Authentication and Authorization
+# MODULE 2 — Authentication and Authorization
 
-## Authentication = Who are you?
+---
 
-The process of proving your identity.
+# 2.1 Authentication
+
+## Definition
+
+Authentication means:
+
+```
+Proving who you are digitally.
+```
+
+The system asks:
+
+```
+"Are you really the owner of this account?"
+```
 
 Examples:
 
 * Username + Password
 * Fingerprint
 * Face ID
-* OTP
 * Passkey
+* OTP
+
+---
+
+# 2.2 Authorization
+
+## Definition
+
+Authorization means:
+
+```
+Determining what an authenticated user is allowed to access.
+```
 
 Example:
 
 ```
-Website asks:
-Who are you?
+You successfully log into a company account
+(Authentication)
 
-You prove:
-I am Soumya.
-
-Authentication successful.
+But you may not have permission to access payroll files
+(Authorization)
 ```
 
 ---
 
-## Authorization = What can you access?
+# 2.3 Username
 
-After identity is verified, the system decides what resources you may use.
+A username is:
+
+* a digital identity,
+* usually unique,
+* used to identify users.
 
 Example:
 
-```
-Employee login successful
-
-Can access:
-✓ Email
-
-Cannot access:
-✗ Payroll database
+```text
+soumya123
 ```
 
 ---
 
-# 2. Password Security
+# 2.4 Password
 
-## Dictionary Attack
+A password is:
 
-Attacker tries common words from a list.
+* a secret memorized string,
+* used to prove identity.
+
+Good passwords should be:
+
+* long,
+* random,
+* unique.
+
+---
+
+
+---
+
+
+# What is a Hash Function?
+
+A hash function converts data of any size into a fixed-size output called a hash (digest).
+
+**Example**
+Message:
+"Hello"
+
+SHA-256 Output:
+185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969
+
+**Important Properties**
+Same input → same output
+Tiny change in input → completely different hash
+Fast to compute
+One-way function
+Fixed-length output
+
+**Common Hash Algorithms**
+SHA-256
+SHA-384
+SHA-512
+
+---
+
+---
+# SYMMETRIC ENCRYPTION
+
+Definition:
+The same key is used for:
+
+Encryption
+Decryption
+Example
+
+**AES = Advanced Encryption Standard**
+Plaintext
+   ↓
+AES + Key
+   ↓
+Ciphertext
+**Receiver**
+Ciphertext
+   ↓
+AES + Same Key
+   ↓
+Plaintext
+**Advantages**
+Very fast
+Efficient
+**Disadvantage**
+Both parties must somehow obtain the same secret key.
+
+---
+
+---
+
+# ASYMMETRIC (PUBLIC KEY) CRYPTOGRAPHY
+
+Definition:
+Uses two mathematically related keys:
+
+Public Key: Can be shared with everyone.
+
+Private Key: Must remain secret.
+
+**Encryption Process**
+Message
+   ↓
+Encrypt with Public Key
+   ↓
+Ciphertext
+Only corresponding Private Key can decrypt.
+
+**Main Algorithms**
+
+RSA = Rivest Shamir Adleman
+ECC = Elliptic Curve Cryptography
+DSA = Digital Signature Algorithm
+ECDSA = Elliptic Curve Digital Signature Algorithm
+
+---
+
+---
+
+# DIFFIE–HELLMAN KEY EXCHANGE
+**What is Diffie-Hellman?**
+
+Diffie-Hellman (DH) is:
+
+**NOT**
+
+An encryption algorithm.
+
+**IS**
+
+A Key Exchange Algorithm.
+Its purpose is to create a shared secret over an insecure network.
+
+**Public Values**
+
+Both parties agree on:
+
+**Generator**
+g
 
 Example:
+
+g = 2
+
+**Prime Number**
+p
+
+A very large prime.
+
+**Alice**
+Private Key:
+a
+
+Public Key:
+A = g^a mod p
+
+**Bob**
+Private Key:
+b
+
+Public Key:
+B = g^b mod p
+
+**Exchange**
+
+Alice sends:
+A
+
+Bob sends:
+B
+
+**Shared Secret**
+
+Alice computes:
+
+S(A) = B^a mod p
+
+Bob computes:
+
+S(B) = A^b mod p
+
+Result:
+
+S = g^(ab) mod p
+
+Since:
+
+ab = ba
+
+Both obtain the same secret.
+
+**Why Important?**
+
+Neither side transmitted:
+a
+or
+b
+
+Only public values were exchanged.
+
+
+---
+
+---
+
+# KEY DERIVATION FUNCTIONS (KDF)
+
+**Problem**
+Raw secret:
+S
+may contain mathematical structure.
+
+**Solution**
+Feed S into a Key Derivation Function.
+**Examples**
+HKDF = HMAC-based Key Derivation Function
+SHA-256
+
+**Output**
+A strong symmetric key.
+Example:
+256-bit AES Key
+
+**Why HKDF is Preferred**
+**Extract Phase**
+Removes patterns.
+**Expand Phase**
+Produces exact key length.
+
+**Example:**
+AES-128
+AES-256
+
+
+---
+
+---
+
+# USING AES AFTER DIFFIE-HELLMAN
+
+**Process:**
+DH Shared Secret
+      ↓
+HKDF
+      ↓
+AES Key
+      ↓
+Encrypt Messages
+
+After the handshake, all communication is performed using AES.
+
+
+---
+
+---
+
+
+
+
+
+
+---
+
+---
+# MODULE 3 — Password Attacks
+
+Attackers try to discover passwords.
+
+
+# 3.1 Dictionary Attack
+
+## Definition
+
+A dictionary attack means:
+
+```
+Trying common words from a predefined list.
+```
+
+Attackers use files containing:
+
+* English words,
+* common passwords,
+* leaked passwords,
+* predictable patterns.
+
+Examples:
 
 ```
 password
-football
 india123
-welcome
+football
 qwerty
+welcome
 ```
 
-Weak passwords fall quickly.
+Why effective?
+
+Because humans choose predictable passwords.
 
 ---
 
-## Brute Force Attack
+# 3.2 Brute Force Attack
 
-Attacker systematically tries every possible password.
+## Definition
+
+A brute force attack means:
+
+```
+Trying every possible password combination systematically.
+```
+
+Instead of guessing likely passwords,
+the attacker tests ALL possibilities.
+
+---
+
+## Example: 4-digit PIN
+
+Possible values:
+
+```text
+0000 → 9999
+```
+
+Total:
+
+10^4 = 10000
+
+Modern computers can test thousands or millions of combinations per second.
+
+---
+
+# 3.3 Why Longer Passwords Matter
+
+If password length increases:
+
+```
+Search space increases exponentially.
+```
 
 Example:
 
+Digits only:
+
 ```
+10 possibilities per position
+```
+
+Letters:
+
+```
+52 possibilities
+```
+
+Letters + digits + symbols:
+
+```
+90+ possibilities
+```
+
+Longer passwords become dramatically harder to brute force.
+
+---
+
+# MODULE 4 — Password Cracking Demonstrations
+
+Python programs can automate brute forcing.
+
+---
+
+# 4.1 Digits Only
+
+```python id="mbofro"
+from string import digits
+
+for i in digits:
+    for j in digits:
+        for k in digits:
+            for l in digits:
+                print(i, j, k, l)
+```
+
+---
+
+## Explanation
+
+### `from string import digits`
+
+Imports:
+
+```text
+0123456789
+```
+
+---
+
+## Nested Loops
+
+Each loop iterates through every digit.
+
+Example:
+
+```text
+i → first digit
+j → second digit
+k → third digit
+l → fourth digit
+```
+
+The program generates:
+
+```text
 0000
 0001
 0002
-0003
 ...
 9999
 ```
 
-A 4-digit PIN:
+---
 
-```
-10^4 = 10,000 combinations
+# 4.2 ASCII Letters
+
+ASCII = American Standard Code for Information Interchange.
+
+It is a character encoding standard.
+
+```python id="5i4e0p"
+from string import ascii_letters
 ```
 
-Modern computers can test enormous numbers of combinations very quickly.
+Includes:
+
+* uppercase letters,
+* lowercase letters.
 
 ---
 
-## Password Complexity
+# 4.3 Letters + Digits + Symbols
 
-Increasing character sets dramatically increases possibilities.
-
-### Digits only
-
-```
-0-9
+```python id="l3qh8g"
+from string import ascii_letters, digits, punctuation
 ```
 
-10 possibilities per position.
+This massively increases possible combinations.
 
 ---
 
-### Letters
+# MODULE 5 — NIST Password Guidelines
 
-```
-a-z
-A-Z
-```
+NIST =
+National Institute of Standards and Technology
 
-52 possibilities.
+NIST publishes cybersecurity standards.
 
 ---
 
-### Letters + Numbers + Symbols
+# 5.1 Password Length
 
-```
-A-Z
-a-z
-0-9
-!@#$%^&
-```
-
-Huge search space.
-
----
-
-# 3. NIST Password Recommendations
-
-The **National Institute of Standards and Technology (NIST)** publishes modern password guidelines.
-
-Important points:
-
-### Minimum Length
-
-At least:
+Minimum:
 
 ```
 8 characters
 ```
 
----
-
-### Maximum Length
-
-Allow at least:
+Recommended:
 
 ```
-64 characters
+Allow at least 64 characters
 ```
+
+Longer passwords are harder to brute force.
 
 ---
 
-### Accept Special Characters
+# 5.2 Allowed Characters
+
+Accept:
+
+* letters,
+* numbers,
+* symbols,
+* spaces,
+* Unicode.
+
+---
+
+# 5.3 Unicode
+
+Unicode allows characters from all languages.
 
 Examples:
 
-```
-!
-@
-#
-$
-%
-```
-
----
-
-### Accept Unicode
-
-Examples:
-
-```
-你好
+```text
 नमस्ते
+你好
 😊
 ```
 
 ---
 
-### Block Weak Passwords
+# 5.4 Block Weak Passwords
 
 Reject:
 
+* common passwords,
+* leaked passwords,
+* repetitive passwords,
+* sequential passwords.
+
+Examples:
+
 ```text
-password123
-qwerty
-admin
 123456
+password
+abcdef
 ```
 
 ---
 
-### Avoid Password Hints
+# 5.5 Avoid Context-Specific Passwords
 
-Bad:
+Do NOT use:
+
+* website name,
+* username,
+* personal information.
+
+Bad example:
+
+```text
+gmail123
+```
+
+---
+
+# 5.6 Password Hints
+
+Avoid security questions.
+
+Examples:
 
 ```text
 First pet?
 Mother's maiden name?
 ```
 
-Attackers may discover these.
+Attackers may discover answers online.
 
 ---
 
-### No Forced Password Changes
+# 5.7 Password Rotation
 
-Changing passwords every month often leads users to choose weaker passwords.
+NIST says:
 
-Bad:
+```
+Do not force arbitrary password changes.
+```
+
+Because users create weaker patterns like:
 
 ```
 Password1
@@ -243,143 +655,127 @@ Password3
 
 ---
 
-### Rate Limiting
+# 5.8 Rate Limiting
 
-Limit login attempts.
+Rate limiting means:
+
+```
+Limiting login attempts.
+```
 
 Example:
 
 ```
-5 failed attempts
-
-Account locked temporarily
+5 failed logins
+→ temporary lockout
 ```
 
-This slows brute-force attacks.
+This slows brute force attacks.
 
 ---
 
-# 4. Multi-Factor Authentication (MFA)
+# MODULE 6 — Multi-Factor Authentication (MFA)
 
-Authentication factors fall into three categories.
+MFA =
+
+```
+Multi-Factor Authentication
+```
+
+Also called:
+
+```
+2FA = Two-Factor Authentication
+```
 
 ---
 
-## Knowledge Factor
+# 6.1 Knowledge Factor
 
-Something you know.
+Something you KNOW.
 
 Examples:
 
-```
-Password
-PIN
-Security answer
-```
+* Password
+* PIN
 
 ---
 
-## Possession Factor
+# 6.2 Possession Factor
 
-Something you have.
+Something you HAVE.
 
 Examples:
 
-```
-Phone
-Authenticator app
-Security key
-```
+* Phone
+* Security key
+* [Authenticator app]
 
 ---
 
-## Inherence Factor
+# 6.3 Inherence Factor
 
-Something you are.
+Something you ARE.
 
 Examples:
 
-```
-Fingerprint
-Face
-Iris scan
-Voice
-```
+* Fingerprint
+* Face
+* Iris
+
+These are biometrics.
 
 ---
 
-## Why MFA- Multi Factor Athentication Works
+# 6.4 OTP
 
-Attacker needs multiple independent factors.
+OTP =
+
+```
+One-Time Password
+```
+
+Temporary login code.
 
 Example:
 
 ```
-Password
-+
-Phone OTP
+682193
 ```
-
-Password alone is insufficient.
 
 ---
 
-# 5. One-Time Passwords (OTP)
+# 6.5 SIM Swapping
 
-Temporary code.
-
-Example:
+SIM =
 
 ```
-683294
+Subscriber Identity Module
 ```
 
-Valid only briefly.
+Attack:
 
----
+* attacker impersonates victim,
+* telecom provider transfers phone number,
+* attacker receives OTPs.
 
-# 6. SIM Swapping
-
-Attacker convinces telecom provider:
-
-```
-"I am the customer."
-```
-
-Provider transfers phone number to attacker’s SIM.
-
-Result:
-
-```
-Victim OTPs
-↓
-Attacker receives them
-```
-
-**Therefore**:
+Therefore:
 
 Prefer:
 
-```
- [Authenticator Apps]
-```
+* authenticator apps,
+* security keys,
 
-instead of:
-
-```
-SMS OTP
-```
-
-whenever possible.
+instead of SMS OTP.
 
 ---
 
-# 7. [Malware] - Malicious software and [Keyloggers] - Records keystrokes
+# MODULE 7 — Malware
 
-Malware:
+Malware =
 
 ```
-Malicious software
+Malicious Software
 ```
 
 Examples:
@@ -391,116 +787,93 @@ Examples:
 
 ---
 
-## Keylogger
+# 7.1 Keylogger
 
-Records keystrokes.
+A keylogger records:
 
-Captures:
+* keystrokes,
+* passwords,
+* messages,
+* sensitive information.
 
-```
-Passwords
-Credit cards
-Emails
-Messages
-```
-
-Even strong passwords fail if malware records them.
+Even strong passwords fail if malware captures them.
 
 ---
 
-# 8. Credential Stuffing
+# MODULE 8 — Credential Stuffing
 
-Attacker already possesses leaked credentials.
-
-Example:
+Credential =
 
 ```
-Username:
-abc@gmail.com
-
-Password:
-hello123
+Login information
 ```
 
-They try same credentials elsewhere.
+Usually:
 
-Because users reuse passwords.
+* username,
+* password.
+
+---
+
+# 8.1 Credential Stuffing Attack
+
+Attackers use leaked credentials from one website on another website.
+
+Because many users reuse passwords.
 
 Defense:
 
-* Unique passwords
-* Password manager
-* MFA
+* unique passwords,
+* password managers,
+* MFA.
 
 ---
 
-# 9. Social Engineering
-
-Manipulating humans instead of computers.
-
-Examples:
-
-```
-Pretending to be support staff
-Pretending to be a bank
-Pretending to be a coworker
-```
+# MODULE 9 — Social Engineering and Phishing
 
 ---
 
-# 10. Phishing
+# 9.1 Social Engineering
 
-Fake communications designed to steal credentials.
+Manipulating humans instead of hacking computers.
 
 Examples:
 
-* Email
-* SMS
-* Website
+* pretending to be support staff,
+* pretending to be a bank,
+* creating urgency.
+
+---
+
+# 9.2 Phishing
+
+Phishing =
+
+```
+Fake communications designed to steal information.
+```
+
+Examples:
+
+* fake email,
+* fake login page,
+* fake SMS.
 
 Always verify:
 
-```
-URL
-Domain name
-HTTPS
-```
+* URL,
+* domain name,
+* HTTPS.
 
 ---
 
-# 11. Man-in-the-Middle (MITM)
+# MODULE 10 — Password Managers
 
-Attacker sits between two parties.
+Password managers:
 
-```
-Alice
- ↕
-Eve
- ↕
-Bob
-```
-
-Eve may:
-
-* Read
-* Modify
-* Inject
-* Forward
-
-communications.
-
-Defense:
-
-* TLS
-* HTTPS
-* WPA
-* Digital certificates
-
----
-
-# 12. Password Managers
-
-Store strong unique passwords.
+* generate passwords,
+* store passwords securely,
+* autofill credentials.
 
 Examples:
 
@@ -510,29 +883,35 @@ Examples:
 
 Benefits:
 
-* Unique passwords everywhere
-* Resistant to credential stuffing
-* No memorization burden
+* strong passwords,
+* unique passwords,
+* prevents reuse.
 
 ---
 
-# 13. Hash Functions
+# MODULE 11 — Hash Functions
 
-A hash function converts arbitrary-length input into fixed-length output.
+Hash function =
+
+```
+Mathematical function converting arbitrary-length input into fixed-length output.
+```
 
 Example:
 
 ```
 apple
 ↓
-8d93a4...
+hash
 ```
 
 ---
 
-## Properties
+# 11.1 Important Properties
 
-### Fixed Length Output
+---
+
+## Fixed-Length Output
 
 Small input:
 
@@ -550,7 +929,7 @@ Both produce fixed-length hashes.
 
 ---
 
-### One-Way
+## One-Way Function
 
 Easy:
 
@@ -561,67 +940,100 @@ Input → Hash
 Hard:
 
 ```
-Hash → Input
+Hash → Original input
+```
+
+Therefore hashes are not encryption.
+
+---
+
+# MODULE 12 — Password Storage
+
+Websites should NOT store plaintext passwords.
+
+Instead:
+
+```
+Password
+↓
+Hash Function
+↓
+Hash stored in database
 ```
 
 ---
 
-# 14. Password Storage
+# Login Process
 
-Websites should store:
-
-```
-Hash(password)
-```
-
-not:
+User enters password:
 
 ```
-password
-```
-
----
-
-During login:
-
-```
-User enters password
+Entered password
 ↓
 Hash generated
 ↓
 Compare hashes
 ```
 
-Match:
+If hashes match:
 
 ```
-Authenticated
+Authentication successful
 ```
 
 ---
 
-# 15. Rainbow Tables
+# MODULE 13 — Hash Attacks
 
-Precomputed database:
+---
+
+# 13.1 Dictionary Attack Against Hashes
+
+Attackers:
+
+* hash common words,
+* compare hashes with stolen database.
+
+---
+
+# 13.2 Brute Force Against Hashes
+
+Try:
+
+* numbers,
+* letters,
+* symbols.
+
+Hash each candidate and compare.
+
+---
+
+# 13.3 Rainbow Table
+
+Rainbow table =
 
 ```
-Password → Hash
+Precomputed password-to-hash database.
 ```
 
 Example:
 
 ```
-apple → xyz
-banana → abc
+password → hash
+banana → hash
 ```
 
-Allows rapid cracking.
+Speeds up cracking.
 
 ---
 
-# 16. Salting
+# MODULE 14 — Salting
 
+Salt =
+
+```
 Random value added before hashing.
+```
 
 Example:
 
@@ -631,633 +1043,579 @@ password + salt
 hash
 ```
 
+---
+
+# Why Salting Matters
+
+Without salt:
+
+* identical passwords produce identical hashes.
+
+With salt:
+
+* hashes become unique.
+
 Benefits:
 
-* Same password ≠ same hash
-* Defeats rainbow tables
-* Makes mass cracking harder
-
-Every user should have a unique salt.
+* defeats rainbow tables,
+* slows mass attacks.
 
 ---
 
-# 17. Cryptography
+# MODULE 15 — Cryptography
 
-Science of securing information.
+Cryptography =
+
+```
+Science of protecting information using mathematics.
+```
 
 Goals:
 
-* Confidentiality
-* Integrity
-* Authentication
-* Non-repudiation
+* confidentiality: Ensure no unauthorised persons intersept the password
+* integrity: Ensure data in tansit is not modified
+* authentication: Identify right sender
+* non-repudiation.
 
 ---
 
-# 18. Codes vs Ciphers
-
-## Codes
-
-Whole words mapped.
-
-Example:
-
-```text
-"Bluebird"
-=
-"Attack"
-```
-
-Require codebook.
+# MODULE 16 — Codes vs Ciphers
 
 ---
 
-## Ciphers
+# 16.1 Codes
 
-Algorithm transforms characters/bits.
+Replace words/phrases with other words.
 
-Example:
+Require:
 
-```text
-HELLO
-↓
-KHOOR
+```
+Codebook
 ```
 
-More flexible.
+---
+
+# 16.2 Ciphers
+
+Algorithmically transform letters/bits.
 
 Modern cryptography uses ciphers.
 
 ---
 
-# 19. Symmetric Encryption
+# MODULE 17 — Encryption and Decryption
 
-Same key for encryption and decryption.
+Encryption:
 
-```text
-Encrypt
- ↓
-Secret Key
- ↓
-Decrypt
+```
+Plaintext → Ciphertext
 ```
 
-Both parties need identical key.
+Decryption:
+
+```
+Ciphertext → Plaintext
+```
+
+---
+
+# MODULE 18 — Keys
+
+Key =
+
+```
+Secret value controlling cryptographic algorithm behavior.
+```
+
+Algorithms can be public.
+
+Security depends on secrecy of keys.
+
+---
+
+# MODULE 19 — Symmetric Encryption
+
+Same key used for:
+
+* encryption,
+* decryption.
 
 Examples:
 
 * AES
 * Triple DES
 
----
+AES =
 
-## Problem
+```
+Advanced Encryption Standard
+```
 
-How do both parties obtain the secret key securely?
+DES =
 
-This leads to public-key cryptography.
-
----
-
-# 20. Asymmetric Encryption
-
-Uses two keys:
-
-```text
-Public Key
-Private Key
+```
+Data Encryption Standard
 ```
 
 ---
 
+# Problem of Symmetric Encryption
+
+How do both parties securely share the key?
+
+This leads to asymmetric cryptography.
+
+---
+
+# MODULE 20 — Asymmetric Cryptography
+
+Also called:
+
+```
+Public Key Cryptography
+```
+
+Uses:
+
+* Public Key
+* Private Key
+
 Public key:
 
-```text
-Shared openly
+```
+Shared publicly
 ```
 
 Private key:
 
-```text
+```
 Kept secret
+
+Main Algorithms
+RSA = Rivest Shamir Adleman
+ECC = Elliptic Curve Cryptography
+DSA = Digital Signature Algorithm
+ECDSA = Elliptic Curve Digital Signature Algorithm
+
+
 ```
 
 ---
 
-Anyone can encrypt using public key.
+# MODULE 21 — RSA
 
-Only private key owner can decrypt.
+RSA =
+Rivest–Shamir–Adleman
+
+Named after creators:
+
+* Rivest,
+* Shamir,
+* Adleman.
 
 ---
 
-# 21. RSA
+# 21.1 RSA Key Generation
 
-Popular public-key algorithm.
+Choose prime numbers:
 
----
-
-## Key Generation
-
-Choose primes:
-
-```text
+```
 p
 q
 ```
 
 Compute:
 
-```text
-n = p × q
-```
+n = p * q
 
-Compute:
+Compute Euler's Totient:
 
-```text
-φ(n)=(p−1)(q−1)
-```
+\phi(n)=(p-1)(q-1)
 
 Choose:
 
-```text
+```
 e
 ```
 
 Compute:
 
-```text
+```
 d
 ```
 
-Result:
+Public key:
+
+```
+(n,e)
+```
+
+Private key:
 
 ```text
-Public Key=(n,e)
-
-Private Key=(n,d)
+(n,d)
 ```
 
 ---
 
-## Security
+# 21.2 RSA Encryption
 
-Based on difficulty of factoring large numbers.
+c = m^e \mod n
+
+Where:
+
+* m = message,
+* e = public exponent,
+* n = modulus,
+* c = ciphertext.
 
 ---
 
-# 22. Diffie–Hellman Key Exchange
+# 21.3 RSA Decryption
+
+m = c^d \mod n
+
+Where:
+
+* d = private exponent.
+
+---
+
+# MODULE 22 — Diffie-Hellman Key Exchange
 
 Purpose:
 
-```text
-Securely create shared secret
 ```
+Securely create shared secret over insecure network.
+```
+**DIFFIE–HELLMAN KEY EXCHANGE**
+**What is Diffie-Hellman?**
+Diffie-Hellman (DH) is:
 
-without sending secret itself.
+**NOT**
+
+An encryption algorithm.
+
+**IS**
+
+A Key Exchange Algorithm.
+
+Its purpose is to create a shared secret over an insecure network.
+---
+
+# 22.1 Public Parameters
+
+Shared publicly:
+
+* g = generator,
+* p = large prime.
 
 ---
+
+# 22.2 Private Values
+
+Alice chooses:
+
+```
+a
+```
+
+Bob chooses:
+
+```
+b
+```
+
+These remain secret.
+
+---
+
+# 22.3 Public Values
+
+Alice computes:
+
+A = g^a \mod p
+
+Bob computes:
+
+B = g^b \mod p
+
+---
+
+# 22.4 Shared Secret
 
 Alice:
 
-```text
-A = g^a mod p
-```
+S = B^a \mod p
 
 Bob:
 
-```text
-B = g^b mod p
-```
+S = A^b \mod p
 
-Exchange A and B publicly.
+Both compute same secret.
 
 ---
 
-Shared secret:
+# MODULE 23 — Key Derivation Functions (KDF)
 
-```text
-S = g^(ab) mod p
+KDF =
+
+```
+Key Derivation Function
 ```
 
-Both compute same value.
+Purpose:
 
-Attacker cannot easily derive it.
-
----
-
-# 23. Key Derivation Function (KDF)
-
-Transforms shared secret into strong symmetric key.
+```
+Convert shared secret into secure AES key.
+```
 
 Examples:
 
 * HKDF
 * SHA-256
 
-Produces:
+HKDF =
 
-```text
-AES key
+```
+HMAC-based Key Derivation Function
 ```
 
-used for encryption.
+SHA =
+
+```
+Secure Hash Algorithm
+
+**Example**
+256-bit AES Key
+
+[Why HKDF is Preferred]
+**Extract Phase**
+Removes patterns.
+**Expand Phase**
+Produces exact key length.
+
+Example:
+
+AES-128
+AES-256
+
+
+```
+
+---
+**USING AES AFTER DIFFIE-HELLMAN** 
+DH Shared Secret
+      ↓
+HKDF
+      ↓
+AES Key
+      ↓
+Encrypt Messages
+
+``
+``
+``
+
+# MODULE 24 — Man-in-the-Middle Attack
+
+MITM =
+
+```
+Man-in-the-Middle
+```
+
+Attacker secretly intercepts communication.
+
+Can:
+
+* read,
+* alter,
+* inject,
+* forward traffic.
+
+**Defense**:
+
+* TLS,
+* certificates,
+* digital signatures.
+* RSA
+* ECDSA
+
 
 ---
 
-# 24. Diffie-Hellman Weakness
+# MODULE 25 — Perfect Forward Secrecy (PFS)
 
-No authentication.
+PFS =
 
-Attacker can impersonate parties.
-
-Classic MITM attack.
-
-Solution:
-
-```text
-Certificates
-Digital Signatures
 ```
+Perfect Forward Secrecy: Compromise of today's keys must not reveal yesterday's communications.
+```
+
+Uses temporary session keys.
+
+Even if long-term keys are stolen later:
+
+```
+Past sessions remain safe.
+```
+
+**Achieved Using**
+**DHE**
+Diffie-Hellman Ephemeral
+**ECDHE**
+Elliptic Curve Diffie-Hellman Ephemeral
+
+**Process**
+**Every session**:
+New private keys
+New shared secret
+New AES key
+
+**After session**:
+Delete keys.
+
+**Benefit**
+Even if server private key is stolen later:
+Past traffic remains secure.
 
 ---
 
-# 25. Perfect Forward Secrecy (PFS)
-
-Generate temporary keys for each session.
-
-After session:
-
-```text
-Delete keys
-```
-
-Benefits:
-
-If server compromised later:
-
-```text
-Old traffic remains protected
-```
-
-Implemented using:
-
-* DHE
-* ECDHE
-
----
-
-# 26. Digital Signatures
+# MODULE 26 — Digital Signatures
 
 Purpose:
 
-* Verify identity
-* Verify integrity
+* authenticity,
+* integrity,
+* non-repudiation.
+
+**Standard**: X.509
+
+**Contains**:
+Domain name
+Public key
+Validity period
+Signature
 
 ---
 
-Process:
+# Signing Process
 
 Document
-
 ↓
-
 Hash
-
 ↓
-
-Sign hash with private key
-
+Sign hash using private key
 ↓
-
 Digital signature
 
 ---
 
-Verification:
+# Verification
 
-Document
+Recipient:
 
-↓
-
-Hash
-
-↓
-
-Compare with hash recovered using public key
-
----
+* hashes document,
+* decrypts signature using public key,
+* compares hashes.
 
 If identical:
 
-```text
-Document unchanged
+```
 Signature valid
 ```
 
 ---
 
-# 27. Passkeys (WebAuthn)
+# CERTIFICATE AUTHORITIES (CA)
 
-Modern replacement for passwords.
+CA = Certificate Authority
 
-Each website gets:
+**Examples**:
+DigiCert
+Let's Encrypt
+GlobalSign
+Function
 
-```text
-Public Key
-Private Key
+Verify website identity.
+
+Digitally sign certificates.
+
+# MODULE 27 — TLS and HTTPS
+
+TLS =
+
+```
+Transport Layer Security
 ```
 
-pair.
+SSL =
+
+```
+Secure Sockets Layer
+```
+
+SSL is older version of TLS.
+
+HTTPS =
+
+```
+HyperText Transfer Protocol Secure
+```
 
 ---
 
-Website stores:
+# TLS Purpose
 
-```text
-Public Key
+Encrypt communication between:
+
 ```
-
-Device stores:
-
-```text
-Private Key
-```
-
----
-
-Login:
-
-Website sends challenge.
-
-Device signs challenge.
-
-Website verifies signature.
-
-Advantages:
-
-* No passwords
-* Phishing resistant
-* No credential stuffing
-
----
-
-# 28. Encryption in Transit
-
-Protects moving data.
-
-Example:
-
-```text
 Browser ⇄ Website
 ```
+# WIRESHARK VIEW OF TLS
+Wireshark
 
-Uses:
+**Network protocol analyzer**.
 
-* TLS
-* HTTPS
+Client Hello Contains: key_share
+"Client public key".
 
----
+Server Hello Contains:key_share
+"Server public key".
 
-## End-to-End Encryption (E2EE)
-
-Only sender and recipient can read messages.
-
-Examples:
-
-* WhatsApp
-* iMessage
-
-Even service provider should not see contents.
-
----
-
-# 29. Encryption at Rest
-
-Protects stored data.
+Cipher Suite
 
 Example:
+TLS_AES_256_GCM_SHA384
 
-```text
-Laptop SSD
-Phone storage
-Database
+**Meaning**:
+AES-256 encryption
+GCM = Galois Counter Mode
+SHA-384 hashing
+Application Data
+
+After handshake:
+
+All packets become encrypted.
+---
+
+# MODULE 28 — Certificates
+
+Certificate =
+
+```
+Digitally signed public key document.
 ```
 
-Uses encryption while data sits idle.
+Contains:
 
----
+* domain/website name,
+* public key,
+* expiration date,
+* signature.
 
-## Full Disk Encryption (FDE)
-
-Encrypts entire storage drive.
-
-Examples:
-
-* BitLocker
-* FileVault
-
-Benefits:
-
-Stolen device ≠ stolen data.
-
----
-
-# 30. Secure Deletion
-
-Deleting file usually removes references only.
-
-Data may still exist.
-
-Secure deletion:
-
-```text
-Overwrite bits
-```
-
-with:
-
-* zeros
-* ones
-* random values
-
----
-
-# 31. TPM and Secure Enclave
-
-Hardware security modules.
-
-Store encryption keys securely.
-
-Examples:
-
-* TPM (Windows)
-* Secure Enclave (Apple)
-
-Protect against physical theft and tampering.
-
----
-
-# 32. Ransomware
-
-Attacker encrypts victim’s files.
-
-Then demands payment.
-
-Example:
-
-```text
-Pay 5 BTC
-or lose data
-```
-
----
-
-FDE does NOT stop ransomware.
-
-Reason:
-
-Files are already decrypted while you are logged in.
-
----
-
-# 33. Backup Strategy (3-2-1-1-0)
-
-Maintain:
-
-### 3 copies
-
-Original + 2 backups
-
-### 2 media types
-
-SSD + HDD
-
-### 1 offsite copy
-
-Cloud
-
-### 1 immutable copy
-
-Air-gapped/locked
-
-### 0 restore errors
-
-Test backups regularly
-
----
-
-# 34. Wi-Fi Security
-
-Standards:
-
-* WPA
-* WPA2
-* WPA3
-
-Encrypt traffic between:
-
-```text
-Device ⇄ Router
-```
-
-Prevent wireless eavesdropping.
-
----
-
-# 35. Packet Sniffing
-
-Capturing network packets.
-
-Tools:
-
-* Wireshark
-* tcpdump
-
----
-
-Legitimate:
-
-* Troubleshooting
-* Security analysis
-
----
-
-Malicious:
-
-* Password theft
-* Cookie theft
-* Session hijacking
-
----
-
-HTTPS prevents reading packet contents.
-
----
-
-# 36. Cookies and Sessions
-
-After login:
-
-Server sends:
-
-```text
-Set-Cookie
-```
-
-Browser stores:
-
-```text
-session=1234abcd
-```
-
-Future requests include cookie.
-
-This allows websites to remember users.
-
----
-
-Risk:
-
-Session hijacking.
-
-Defense:
-
-```text
-HTTPS
-Secure cookies
-```
-
----
-
-# 37. TLS and Certificates
-
-TLS secures HTTP.
-
-Result:
-
-```text
-HTTPS
-```
-
----
-
-Website owns:
-
-```text
-Public Key
-Private Key
-```
-
----
-
-Certificate contains:
-
-* Domain name
-* Public key
-* Expiration date
-* Digital signature
-
-Format:
+Standard:
 
 ```text
 X.509
@@ -1265,9 +1623,15 @@ X.509
 
 ---
 
-# 38. Certificate Authorities (CA)
+# MODULE 29 — Certificate Authorities (CA)
 
-Trusted organizations.
+CA =
+
+```
+Certificate Authority
+```
+
+Trusted organizations that sign certificates.
 
 Examples:
 
@@ -1275,108 +1639,566 @@ Examples:
 * Let's Encrypt
 * GlobalSign
 
+**Function**
+
+Verify website identity.
+Digitally sign certificates.
+
+Browsers trust CAs.
+
 ---
 
-CA signs website certificates.
+# Certificate Verification
 
-Browser verifies signature.
+Browser:
 
-If valid:
+* downloads certificate,
+* hashes certificate,
+* verifies signature using CA public key.
 
-```text
-Connection trusted
+If hashes match:
+
+```
+Certificate trusted.
 ```
 
 ---
+**CERTIFICATE CHAIN**
+Root CA
+    ↓
+Intermediate CA
+    ↓
+Website Certificate
 
-# 39. Quantum Computing
 
-Classical bit:
+``
+``
+``
 
-```text
-0 or 1
+# MODULE 30 — Passkeys and WebAuthn
+
+WebAuthn =
+
+```
+Web Authentication
 ```
 
-Quantum bit:
+Passkeys replace passwords.
 
-```text
-0 and 1 simultaneously
-```
+Uses:
 
-(superposition)
-
-Potentially massive computational power.
+* public/private key pairs,
+* biometrics,
+* challenge-response authentication.
 
 ---
 
-# 40. Threat to Cryptography
+# Login Process
 
-Shor's Algorithm can break:
+Website sends challenge:
 
-* RSA
-* Diffie-Hellman
-* ECC
+```
+Random data
+```
 
-by solving currently hard mathematical problems efficiently.
+Device:
+
+* signs challenge with private key.
+
+Website:
+
+* verifies using public key.
+
+Benefits:
+
+* phishing resistant,
+* no passwords,
+* no credential stuffing.
+* Unique keys per website.
 
 ---
 
-# 41. Post-Quantum Cryptography (PQC)
+# MODULE 31 — Encryption in Transit
 
-Designed to resist quantum attacks.
+Protects moving data.
 
 Examples:
 
-### ML-KEM (Kyber)
-
-Key exchange / key encapsulation.
-
-### ML-DSA (Dilithium)
-
-Digital signatures.
-
-### Falcon
-
-Alternative signature scheme.
-
----
-
-# 42. Hybrid Cryptography
-
-Current deployment:
-
-```text
-Classical DH
-+
-ML-KEM
-↓
-KDF
-↓
-AES Key
+```
+Browser ⇄ Website
 ```
 
-Secure if either mechanism remains secure.
+Uses:
 
-Used by modern infrastructure such as browsers and major network providers.
+* TLS,
+* HTTPS.
+
+**Examples**
+TLS(Transport Layer Protocol)
+HTTPS (Hyper text protocol secure)
+WPA (WiFi Protected Access)
 
 ---
 
-# The 15 Most Important Things to Remember
+# 31.1 End-to-End Encryption
 
-1. Authentication proves identity.
-2. Authorization determines permissions.
-3. Strong passwords + MFA are essential.
-4. Credential reuse leads to credential stuffing attacks.
-5. Hash passwords; never store plaintext passwords.
-6. Salt hashes to defeat rainbow tables.
-7. Symmetric encryption uses one key (AES).
-8. Asymmetric encryption uses public/private keys (RSA).
-9. Diffie–Hellman creates shared secrets.
-10. Digital signatures provide authenticity and integrity.
-11. TLS + certificates secure HTTPS.
-12. Passkeys replace passwords using public-key cryptography.
-13. Full Disk Encryption protects stolen devices.
-14. Backups defeat ransomware.
-15. Quantum computers threaten RSA/DH, leading to post-quantum cryptography.
+Only sender and receiver can read messages.
 
-If you truly understand these 15 points and how they connect, you have captured the core ideas from the entire 3 hours 27 minutes of material.
+Examples:
+
+* WhatsApp
+* iMessage
+
+Even service provider should not read messages.
+
+---
+
+# MODULE 32 — Encryption at Rest
+
+Protects stored data.
+
+Examples:
+
+* SSD,
+* HDD,
+* phone storage.
+
+---
+
+# Full Disk Encryption (FDE)
+
+Encrypts entire storage drive.
+
+Examples:
+
+* BitLocker (Windows)
+* FileVault (macOS)
+
+
+If device stolen:
+
+```
+Data remains unreadable.
+```
+
+---
+
+# MODULE 33 — Secure Deletion
+
+Deleting file normally:
+
+```
+Only removes reference.
+```
+
+Data may still exist.
+
+Secure deletion:
+
+```
+Overwrite bits with new data.
+```
+
+---
+# SSD FIRMWARE & BAD SECTORS
+
+SSD firmware may lock damaged sectors.
+
+If encryption enabled from Day 1:Old data remains encrypted.
+
+If enabled later:Old unencrypted remnants may persist.
+
+--
+--
+--
+
+# MODULE 34 — Ransomware
+
+Ransomware:
+
+* encrypts victim files,
+* demands payment.
+
+Problem:
+FDE(Full Disk Encryption) does NOT protect while device is unlocked.
+
+**Important Distinction**
+FDE Protects Against: Physical theft.
+Ransomware Exploits: Logical access while device is unlocked.
+
+
+---
+
+# MODULE 35 — Backup Strategy
+
+3-2-1-1-0 Rule:
+
+* 3 copies,
+* 2 media types,
+* 1 offsite copy,
+* 1 immutable copy,
+* 0 restore errors.
+
+Protects against ransomware.
+
+---
+
+# MODULE 36 — TPM and Secure Enclave
+
+TPM =
+
+```
+Trusted Platform Module: Dedicated hardware security chip.
+```
+
+**Purpose**
+Store encryption secrets securely.
+Secure hardware chip storing encryption keys.
+
+Apple equivalent:
+
+```
+Secure Enclave
+```
+
+---
+
+# Measured Boot
+
+System measures:
+
+* BIOS,
+* firmware,
+* kernel.
+
+**Boot Sequence**
+Power On
+ ↓
+BIOS/UEFI
+ ↓
+Kernel
+ ↓
+TPM Verification
+ ↓
+Release Encryption Key
+ ↓
+Boot OS
+
+**If altered**:
+
+```
+TPM refuses key release.
+```
+**PCR** Platform Configuration Registers.
+Store measurements of system state.
+
+If measurements change:TPM refuses key release.
+
+
+---
+
+# MODULE 37 — Wi-Fi Security
+
+WPA =
+
+```
+Wi-Fi Protected Access
+```
+
+Versions:
+
+* WPA
+* WPA2
+* WPA3
+
+Encrypts:
+
+```
+Device ⇄ Router
+```
+
+---
+
+# MODULE 38 — Packet Sniffing
+
+Packet sniffing =
+
+```
+Capturing and analyzing network packets.
+```
+
+Packets contain:
+
+* source IP,
+* destination IP,
+* protocol,
+* payload.
+
+Tools:
+
+* Wireshark
+* tcpdump
+* 
+**Malicious Uses**
+Password theft
+Cookie theft
+Session hijacking
+
+
+---
+
+# MODULE 39 — Cookies and Sessions
+
+**Cookie** =
+
+```
+Small data stored by browser.
+```
+
+Used to remember user sessions.
+
+**Server sends**:
+
+```
+Set-Cookie
+```
+
+**Browser later sends**:
+
+```
+Cookie
+```
+
+**Example**
+Server sends: Set-Cookie: session=1234abd
+Browser later sends: Cookie: session=1234abd
+
+**Risk**
+Without HTTPS:Cookies can be stolen.
+Leading to:Session Hijacking.
+
+
+---
+
+# Session Hijacking
+
+Attacker steals session cookie.
+
+Defense:
+
+```
+HTTPS
+```
+
+---
+
+# MODULE 40 — Quantum Computing
+
+Classical bit:
+
+```
+0 or 1
+```
+
+Quantum bit (qubit):
+
+```
+0 and 1 simultaneously
+```
+
+This is called:
+
+```
+Superposition
+```
+**State Explosion**
+
+1 Qubit:2 states
+2 Qubits:4 states
+3 Qubits: 8 states
+32 Qubits:~4 billion states
+
+---
+
+# MODULE 41 — Threat to Cryptography
+
+Quantum computers running:
+Shor's Algorithm: A quantum algorithm.
+
+**can break**:
+
+* RSA,
+* Diffie-Hellman,
+* ECC.
+
+**By solving**:
+
+Integer Factorization
+Discrete Logarithms
+
+efficiently.
+
+ECC =
+
+```
+Elliptic Curve Cryptography
+```
+
+---
+
+# MODULE 42 — Post-Quantum Cryptography (PQC)
+
+PQC =
+
+```
+Post-Quantum Cryptography
+```
+
+Designed to resist quantum attacks.
+
+NIST: National Institute of Standards and Technology------------- standardized new algorithms.
+
+ML-KEM: Module-Lattice-Based Key Encapsulation Mechanism
+
+Formerly:Kyber
+
+---
+
+# ML-KEM
+
+ML-KEM =
+
+```
+Module-Lattice-Based Key Encapsulation Mechanism
+```
+
+Formerly:
+
+```
+Kyber
+```
+
+Used for:
+
+```
+Quantum-safe key exchange.
+```
+
+**Key Generation**
+Alice creates: Public Key (pk), Private Key (sk)
+
+**Encapsulation**
+Bob:
+Generates random symmetric key.
+Encrypts it using pk.
+Produces ciphertext: ct
+
+**Decapsulation**
+Alice: Uses sk.
+Recovers same symmetric key.
+
+**Underlying Mathematics**
+
+MLWE: Module Learning With Errors.
+
+**Uses**:
+Lattices
+High-dimensional geometry
+Deliberate mathematical noise
+
+
+---
+
+# ML-DSA
+
+ML-DSA =
+
+```
+Module-Lattice Digital Signature Algorithm
+```
+
+Formerly:
+
+```
+Dilithium
+```
+
+Quantum-safe digital signatures.
+
+---
+
+# Falcon
+
+Alternative lattice-based --------------signature algorithm.
+
+Smaller signatures but------------------ more complex implementation.
+
+---
+
+# MODULE 43 — Hybrid Cryptography
+
+Modern systems combine:
+
+* classical cryptography,
+* post-quantum cryptography.
+
+Example:
+
+```
+Classical Secret
++
+Post-Quantum Secret
+↓
+KDF(Key derivation function)
+↓
+Final AES(Advanced encryption standard) Key
+```
+
+Provides security if either system remains secure.
+
+
+# The complete modern security stack is:
+
+**Hash Functions
+      ↓
+Symmetric Encryption (AES)
+      ↓
+Asymmetric Cryptography
+      ↓
+Diffie-Hellman Key Exchange
+      ↓
+HKDF Key Derivation
+      ↓
+TLS / HTTPS
+      ↓
+Digital Signatures
+      ↓
+Certificates & CAs
+      ↓
+Passkeys / WebAuthn
+      ↓
+Wi-Fi Security (WPA3)
+      ↓
+End-to-End Encryption
+      ↓
+Full Disk Encryption
+      ↓
+TPM / Secure Enclave
+      ↓
+Backups (3-2-1-1-0)
+      ↓
+Post-Quantum Cryptography
+      ↓
+ML-KEM + ML-DSA + Hybrid TLS**
+
+
+
+
+
+
+
+
+
+
+---
+
