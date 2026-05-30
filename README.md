@@ -25,8 +25,8 @@ Cybersecurity is broadly about:
 The entire field revolves around 3 big questions:
 
 ```
-1. Who are you?
-2. Should you have access?
+1. Who are you? ---Authentication
+2. Should you have access?--Authorisation
 3. How do we protect the data?
 ```
 
@@ -62,7 +62,7 @@ Examples:
 
 ---
 
-# 2.2 Authorization
+# 2.2 Authorisation
 
 ## Definition
 
@@ -154,7 +154,7 @@ Encryption
 Decryption
 Example
 
-**AES = Advanced Encryption Standard**
+**AES = Advanced Encryption Standard**: A key is a secret value used by an encryption algorithm.
 Plaintext
    ↓
 AES + Key
@@ -186,6 +186,7 @@ Public Key: Can be shared with everyone.
 Private Key: Must remain secret.
 
 **Encryption Process**
+
 Message
    ↓
 Encrypt with Public Key
@@ -196,7 +197,7 @@ Only corresponding Private Key can decrypt.
 **Main Algorithms**
 
 RSA = Rivest Shamir Adleman
-ECC = Elliptic Curve Cryptography
+ECC = Elliptic Curve Cryptography------------Browser and server perform ECDHE (Elliptic Curve Diffie-Hellman Ephemeral).
 DSA = Digital Signature Algorithm
 ECDSA = Elliptic Curve Digital Signature Algorithm
 
@@ -254,7 +255,7 @@ Alice sends:
 A
 
 Bob sends:
-B
+
 
 **Shared Secret**
 
@@ -285,6 +286,11 @@ b
 
 Only public values were exchanged.
 
+**Examples:**
+HKDF (HMAC-based Key Derivation Function)
+SHA-256 (simple derivation in examples)
+SHA-384
+TLS-specific key schedules
 
 ---
 
@@ -340,7 +346,76 @@ After the handshake, all communication is performed using AES.
 ---
 
 ---
+# Where the Hash Function Appears in Diffie Hellman
 
+The flow is:
+
+Diffie-Hellman
+       ↓
+Shared Secret S
+       ↓
+HKDF / SHA-256(uses hash functions internally)
+       ↓
+AES Key
+       ↓
+AES Encryption
+       ↓
+Ciphertext
+
+**Example:**
+
+Suppose:
+S = 987654321987654321987654321
+
+AES-256 needs exactly: 256 bits
+
+So both sides do: AES Key = SHA-256(S)
+
+or
+
+AES Key = HKDF(S)
+
+Result: F4A81D72...
+
+Now both Alice and Bob have the exact same AES key.
+
+In Modern TLS
+
+**When we visit a website using HTTPS/TLS:**
+
+[Browser and server perform ECDHE] (Elliptic Curve Diffie-Hellman Ephemeral).
+[They compute a shared secret S.]
+[TLS feeds S into HKDF.]
+[HKDF generates]:
+Client encryption key
+Server encryption key
+Authentication keys
+Initialization vectors (IVs)
+AES-GCM or ChaCha20 encrypts the traffic.
+
+So in modern TLS, Diffie-Hellman and hash functions work together, but they perform different jobs.
+
+ECDHE
+  ↓
+Shared Secret
+  ↓
+HKDF (uses hash functions internally)
+  ↓
+Traffic Keys
+  ↓
+AES-GCM
+  ↓
+Encrypted HTTPS Data
+
+**Another Place Hashing Appears with Diffie-Hellman**
+
+Hash functions are also used to:
+i) Verify handshake integrity
+ii) Generate session keys
+iii) Produce Finished messages in TLS
+iv) Prevent tampering during the handshake
+
+So even though Diffie-Hellman itself is only the math for creating S, modern protocols surrounding Diffie-Hellman heavily rely on hashing.
 
 
 
@@ -2190,6 +2265,260 @@ Backups (3-2-1-1-0)
 Post-Quantum Cryptography
       ↓
 ML-KEM + ML-DSA + Hybrid TLS**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
